@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:la_vie_app_orange_hackathone/core/resources/constants.dart';
+import 'package:la_vie_app_orange_hackathone/features/home/presentation/widgets/custom_image.dart';
 
 import '../../../../core/resources/color_manager.dart';
 import '../../../../core/resources/strings_manager.dart';
@@ -11,7 +13,7 @@ import 'basic_planet_info.dart';
 class PlanetCard extends StatelessWidget {
   final String image;
   final String? title;
-  final String? price;
+  final int? price;
 
   final void Function() ontap;
 
@@ -23,25 +25,37 @@ class PlanetCard extends StatelessWidget {
     required this.ontap,
   }) : super(key: key);
 
-  Widget _buildBackGroundContainer() {
-    return const Positioned(
-      bottom: AppSize.s4,
+  Widget _buildBackGroundContainer(BuildContext context) {
+    return Positioned(
+      bottom: AppSize.s1,
       left: AppSize.s4,
       right: AppPadding.p2,
       child: BackgroundContainer(),
     );
   }
 
-  Widget _buildImage() {
-    return Image.asset(
-      image,
+  Widget _buildImage(BuildContext context) {
+    return Positioned(
+      top: MediaQuery.of(context).size.height * .01,
+      left: MediaQuery.of(context).size.height * .005,
+      child: Container(
+        //  decoration: BoxDecoration(color: ColorManager.error),
+        width: MediaQuery.of(context).size.height * .15,
+        height: MediaQuery.of(context).size.height * .2,
+        child: Image.network(
+          '$imageBaseUrl$image',
+          // height: MediaQuery.of(context).size.height * .1,
+          width: MediaQuery.of(context).size.width * .26,
+          fit: BoxFit.contain,
+        ),
+      ),
     );
   }
 
   Widget _buildNumberOfPlanetsUserWant(BuildContext context) {
     return Positioned(
-      top: AppSize.s85,
-      right: AppSize.s10,
+      top: MediaQuery.of(context).size.height * .1,
+      right: MediaQuery.of(context).size.height * .01,
       child: NumberOfPlanets(
         plusButtonOnPressed: () {},
         minusButtonOnPressed: () {},
@@ -50,9 +64,12 @@ class PlanetCard extends StatelessWidget {
   }
 
   Widget _buildPlanetBasicInfo(BuildContext context) {
-    return const Positioned(
-      top: AppSize.s175,
-      child: BasicPlanetInfo(),
+    return Positioned(
+      top: MediaQuery.of(context).size.height * .215,
+      child: BasicPlanetInfo(
+        nameOfThePlanet: title!,
+        plantPrice: price!,
+      ),
     );
   }
 
@@ -90,8 +107,8 @@ class PlanetCard extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            _buildBackGroundContainer(),
-            _buildImage(),
+            _buildBackGroundContainer(context),
+            _buildImage(context),
             _buildNumberOfPlanetsUserWant(context),
             _buildPlanetBasicInfo(context),
             _buildAddPlanetToCartButton(context),

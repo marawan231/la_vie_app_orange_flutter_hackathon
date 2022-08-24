@@ -27,6 +27,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  meta: ^1.4.0
+
   bloc: ^8.1.0
   build_runner: ^2.2.0
   cupertino_icons: ^1.0.2
@@ -36,6 +38,8 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.0
   font_awesome_flutter: ^10.1.0
+  freezed: ^2.1.0+1
+  freezed_annotation: ^2.1.0
   get_it: ^7.2.0
   json_annotation: ^4.6.0
   json_serializable: ^6.3.1
@@ -45,6 +49,7 @@ dependencies:
   retrofit: ^3.0.1+1
   retrofit_generator: ^4.0.3+1
   svg_icon: ^0.0.1
+  cached_network_image: ^3.2.1
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -88,7 +93,6 @@ flutter:
         - asset: assets/fonts/poppins/Poppins-Bold.ttf
           weight: 700
 
-
     - family: Inter
       fonts:
         - asset: assets/fonts/inter/Inter-Black.ttf
@@ -114,7 +118,7 @@ flutter:
           weight: 400
         - asset: assets/fonts/montserrat/Montserrat-Light.ttf
           weight: 300
-          
+
     - family: Meddon
       fonts:
         - asset: assets/fonts/meddon/Meddon.ttf

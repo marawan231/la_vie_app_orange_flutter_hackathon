@@ -12,6 +12,9 @@ class CustomTextField extends StatelessWidget {
     this.width = 0.92,
     this.height = 0.05,
     this.suffixIcon,
+    this.keyboardType = TextInputType.name,
+    this.validator,
+    this.obscureText = false,
   }) : super(key: key);
   final double height;
   final double width;
@@ -20,6 +23,9 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final TextEditingController? controller;
   final String text;
+  final TextInputType keyboardType;
+  final String? Function(String?)? validator;
+  final bool obscureText;
 
   Widget _buildTextAboveTextField(BuildContext context) {
     return Text(
@@ -33,16 +39,17 @@ class CustomTextField extends StatelessWidget {
       width: width,
       height: height,
       child: TextFormField(
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(
-            MediaQuery.of(context).size.height * height,
-          ),
-        ),
-        //
+        // textAlign: TextAlign.left,
+        obscureText: obscureText,
+
+        keyboardType: keyboardType,
+        validator: validator,
+
         cursorColor: Theme.of(context).primaryColor,
 
-        style: Theme.of(context).textTheme.bodySmall,
-        textAlign: TextAlign.left,
+        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+              fontSize: 14,
+            ),
         controller: controller,
       ),
     );

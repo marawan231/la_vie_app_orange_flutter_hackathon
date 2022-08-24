@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../resources/color_manager.dart';
 import '../resources/values_manager.dart';
 
-
 class IncreamentAndDecreameantIcons extends StatelessWidget {
   const IncreamentAndDecreameantIcons({
     Key? key,
@@ -20,6 +19,8 @@ class IncreamentAndDecreameantIcons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.height * .025,
+      width: MediaQuery.of(context).size.width * .05,
       decoration: BoxDecoration(
         color: ColorManager.disableGrey,
         border: Border.all(
@@ -29,15 +30,12 @@ class IncreamentAndDecreameantIcons extends StatelessWidget {
           Radius.circular(radius ?? 0),
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppPadding.p4),
-        child: GestureDetector(
-          onTap: onTap,
-          child: Icon(
-            icon,
-            color: color,
-            size: AppSize.s16,
-          ),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Icon(
+          icon,
+          color: color,
+          size: AppSize.s16,
         ),
       ),
     );

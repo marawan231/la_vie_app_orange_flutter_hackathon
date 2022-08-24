@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_vie_app_orange_hackathone/features/auth/business_logic/cubit/auth_cubit.dart';
 import '../../../../core/resources/color_manager.dart';
 import '../../../../core/resources/constants.dart';
+import '../../../../core/resources/route_manager.dart';
 import '../../../../core/resources/strings_manager.dart';
+import '../../../../core/resources/utils.dart';
 import '../../../../core/resources/values_manager.dart';
+import '../../../../core/web_services/network_exceptions.dart';
 import '../../../../core/widgets/custom_button.dart';
+import '../../business_logic/cubit/auth_state.dart';
+import '../../data/models/auth_model.dart';
 import '../widgets/custom_divider.dart';
 import '../../../../core/widgets/custom_textfield.dart';
+import '../widgets/loading_indicator.dart';
 import '../widgets/social_buttons.dart';
 
 class RegisterView extends StatefulWidget {
@@ -18,6 +25,39 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+
+  Widget _buildRegisterBlocBuilder() {
+    return BlocConsumer<AuthCubit, AuthResultState<AuthModel>>(
+      listener: (context, AuthResultState<AuthModel> state) {
+        state.whenOrNull(success: ((data) {
+          token = data.data!.accessToken;
+
+          showScaffold(
+              text: data.message,
+              context: context,
+              color: ColorManager.primary);
+          Navigator.pushReplacementNamed(context, Routes.homeRoute);
+        }), error: ((error) {
+          showScaffold(
+              text: NetworkExceptions.getErrorMessage(error),
+              context: context,
+              color: ColorManager.error);
+        }));
+      },
+      builder: (context, state) {
+        return state.maybeWhen(loading: () {
+          return const LoadingIndicator();
+        }, orElse: () {
+          return _buildRegisterViewBody();
+        })!;
+      },
+    );
+  }
 
   Widget _buildRegisterViewBody() {
     return Container(
@@ -68,35 +108,76 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   Widget _buildFirstNameTextField() {
-    return const Expanded(child: CustomTextField(text: AppStrings.firstName));
+    return Expanded(
+      child: CustomTextField(
+        validator: (value) {
+          return checkValidation(value);
+        },
+        text: AppStrings.firstName,
+        controller: firstNameController,
+      ),
+    );
   }
 
   Widget _buildLastNameTextField() {
-    return const Expanded(child: CustomTextField(text: AppStrings.lastName));
+    return Expanded(
+      child: CustomTextField(
+        validator: (value) {
+          return checkValidation(value);
+        },
+        text: AppStrings.lastName,
+        controller: lastNameController,
+      ),
+    );
   }
 
   Widget _buildEmailTextField() {
-    return const CustomTextField(
+    return CustomTextField(
+      validator: (value) {
+        return checkValidation(value);
+      },
       text: AppStrings.email,
+      controller: emailController,
     );
   }
 
   Widget _buildPassTextField() {
-    return const CustomTextField(
+    return CustomTextField(
+      validator: (value) {
+        return checkValidation(value);
+      },
       text: AppStrings.password,
+      controller: passwordController,
     );
   }
 
   Widget _buildConfirmPassTextField() {
-    return const CustomTextField(
+    return CustomTextField(
+      validator: (value) {
+        return checkValidation(value);
+      },
       text: AppStrings.confirmPassword,
+      controller: confirmPasswordController,
     );
   }
 
   Widget _buildRegisterButton() {
     return CustomButton(
       text: AppStrings.signUp,
-      onPressed: () {},
+      onPressed: () {
+        if (_formKey.currentState!.validate()) {
+          _sumbitRegestrationData();
+        }
+      },
+    );
+  }
+
+  void _sumbitRegestrationData() {
+    BlocProvider.of<AuthCubit>(context).registerNewUser(
+      firstName: firstNameController.text,
+      lastName: lastNameController.text,
+      email: emailController.text,
+      password: passwordController.text,
     );
   }
 
@@ -117,7 +198,7 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorManager.white,
-      body: _buildRegisterViewBody(),
+      body: _buildRegisterBlocBuilder(),
     );
   }
 }

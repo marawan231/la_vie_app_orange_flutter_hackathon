@@ -9,6 +9,8 @@ import 'font_manager.dart';
 
 ThemeData getApplicationTheme() {
   return ThemeData(
+
+    
     // main colors
     primaryColor: ColorManager.primary,
     primaryColorLight: ColorManager.lightPrimary,
@@ -149,17 +151,18 @@ ThemeData getApplicationTheme() {
         alignLabelWithHint: false,
 
         // content padding
-        contentPadding: const EdgeInsets.all(AppPadding.p8),
         // hint style
+        isDense: true,
         hintStyle: getRegularStyle(
           color: ColorManager.grey2,
-          fontSize: FontSize.s16,
+          fontSize: FontSize.s14,
         ),
         labelStyle:
             getMediumStyle(color: ColorManager.grey, fontSize: FontSize.s14),
         errorStyle: getRegularStyle(color: ColorManager.error),
 
         // enabled border style
+
         enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
                 color: ColorManager.outLineBorderColor, width: AppSize.s1_5),

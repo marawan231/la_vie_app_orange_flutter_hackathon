@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:la_vie_app_orange_hackathone/features/blog/presentation/screens/blog_view.dart';
+import 'package:la_vie_app_orange_hackathone/features/forum/presentation/screens/discussion_forum.dart';
 import 'color_manager.dart';
 import 'values_manager.dart';
 import '../../features/auth/presentation/screens/forgot_password_view.dart';
@@ -14,6 +16,7 @@ class AppConstants {
   static const int numberOfTabBarController = 2;
   static const int rotateToOpposite = 90;
   static const double registerBodyHieght = 500;
+
   final border = const OutlineInputBorder(
     borderSide: BorderSide(color: Colors.transparent, width: AppSize.s1_5),
     borderRadius: BorderRadius.all(
@@ -27,12 +30,15 @@ class AppConstants {
 
 int page = 2;
 int pressedButtonNo = 2;
+String baseUrl = 'https://lavie.orangedigitalcenteregypt.com/api/v1/';
+String imageBaseUrl = 'https://lavie.orangedigitalcenteregypt.com';
 
 List screens = [
-  const ForgotPasswordView(),
+  const DiscussionForumView(),
   const ScanView(),
   const MainPlanetsView(),
   const NotifiticationView(),
   const ProfileView(),
 ];
 
+String? token;

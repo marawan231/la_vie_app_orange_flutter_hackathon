@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_vie_app_orange_hackathone/features/auth/presentation/widgets/loading_indicator.dart';
+import 'package:la_vie_app_orange_hackathone/features/home/business_logic/cubit/plants_cubit.dart';
+import 'package:la_vie_app_orange_hackathone/features/home/business_logic/cubit/plants_state.dart';
+import 'package:la_vie_app_orange_hackathone/features/home/data/models/plants_model.dart';
 import '../../../../core/resources/assets_manager.dart';
 import '../../../../core/resources/values_manager.dart';
 import '../widgets/search_bar.dart';
@@ -17,10 +22,26 @@ class _MainPlanetsViewState extends State<MainPlanetsView> {
   final TextEditingController searchController = TextEditingController();
   bool isSearching = false;
 
+  _buildScreenView(HomePlanetsModel planetData) {
+    return Expanded(
+      child: Column(
+        children: [
+          _buildTitle(context),
+          _buildSearchBar(),
+          _buildCategories(context),
+          const SizedBox(
+            height: AppSize.s40,
+          ),
+          _buildPlanetsView(planetData),
+        ],
+      ),
+    );
+  }
+
   Widget _buildTitle(BuildContext context) {
     return NameWithLogo(
       heightOfLogo: AppSize.s12,
-      textStyle: Theme.of(context).textTheme.titleMedium,
+      textStyle: Theme.of(context).textTheme.headlineLarge,
     );
   }
 
@@ -44,7 +65,7 @@ class _MainPlanetsViewState extends State<MainPlanetsView> {
     );
   }
 
-  Widget _buildPlanets(BuildContext context) {
+  _buildPlanetsView(HomePlanetsModel planetData) {
     return Expanded(
       flex: 5,
       child: GridView.builder(
@@ -53,10 +74,12 @@ class _MainPlanetsViewState extends State<MainPlanetsView> {
             childAspectRatio: 2 / 3,
           ),
           physics: const ClampingScrollPhysics(),
-          itemCount: 4,
+          itemCount: planetData.data!.length,
           itemBuilder: (context, index) {
             return PlanetCard(
-              image: ImageAssets.homePlanet,
+              price: planetData.data![index].price!,
+              title: planetData.data![index].name,
+              image: planetData.data![index].imageUrl!,
               ontap: () {},
             );
           }),
@@ -64,19 +87,26 @@ class _MainPlanetsViewState extends State<MainPlanetsView> {
   }
 
   @override
+  void initState() {
+    BlocProvider.of<PlantsCubit>(context).getAllPlanets();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          _buildTitle(context),
-          _buildSearchBar(),
-          _buildCategories(context),
-          const SizedBox(
-            height: AppSize.s40,
-          ),
-          _buildPlanets(context),
-        ],
-      ),
+    return BlocConsumer<PlantsCubit, PlantsState<HomePlanetsModel>>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return state.maybeWhen(
+          success: ((data) {
+            return _buildScreenView(data);
+          }),
+          orElse: () {
+            return const LoadingIndicator();
+          },
+        );
+        // return _buildPlanetsView();
+      },
     );
   }
 }

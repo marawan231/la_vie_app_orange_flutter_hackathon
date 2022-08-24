@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import '../../../../core/resources/values_manager.dart';
 
 class BasicPlanetInfo extends StatelessWidget {
-  const BasicPlanetInfo({Key? key}) : super(key: key);
+  const BasicPlanetInfo(
+      {Key? key, required this.nameOfThePlanet, required this.plantPrice})
+      : super(key: key);
+  final String nameOfThePlanet;
+  final int plantPrice;
 
   Widget _buildBasicPlanetInfoText(BuildContext context) {
     return Column(
@@ -19,15 +23,18 @@ class BasicPlanetInfo extends StatelessWidget {
 
   Widget _buildPriceText(context) {
     return Text(
-      '50 EGP',
+      "$plantPrice",
       style: Theme.of(context).textTheme.labelMedium,
     );
   }
 
   Widget _buildTitleText(BuildContext context) {
-    return Text(
-      "Crushing Planet",
-      style: Theme.of(context).textTheme.labelLarge,
+    return FittedBox(
+      child: Text(
+        overflow: TextOverflow.ellipsis,
+        nameOfThePlanet,
+        style: Theme.of(context).textTheme.labelLarge,
+      ),
     );
   }
 

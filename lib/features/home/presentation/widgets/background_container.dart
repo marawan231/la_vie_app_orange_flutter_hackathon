@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import '../../../../core/resources/color_manager.dart';
 import '../../../../core/resources/values_manager.dart';
 
-
 class BackgroundContainer extends StatelessWidget {
   const BackgroundContainer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * .29,
+      height: MediaQuery.of(context).size.height * .3,
       decoration: BoxDecoration(
         color: ColorManager.white,
         border: Border.all(

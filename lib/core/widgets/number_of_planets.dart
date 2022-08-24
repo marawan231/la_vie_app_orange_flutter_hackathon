@@ -31,7 +31,7 @@ class NumberOfPlanets extends StatelessWidget {
   Widget _buildNumberOfPlanetUserWant(BuildContext context) {
     return Text(
       '1',
-      style: Theme.of(context).textTheme.headlineLarge,
+      style: Theme.of(context).textTheme.displayLarge,
     );
   }
 

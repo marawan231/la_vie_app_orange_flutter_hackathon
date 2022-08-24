@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_vie_app_orange_hackathone/core/injection.dart';
+import 'package:la_vie_app_orange_hackathone/features/auth/business_logic/cubit/auth_cubit.dart';
+import '../../features/home/business_logic/cubit/plants_cubit.dart';
 import 'strings_manager.dart';
 import '../../features/blog/presentation/screens/blog_view.dart';
 import '../../features/blog/presentation/screens/single_blog.dart';
@@ -7,7 +11,6 @@ import '../../features/notification/presentation/screens/notifitication_view.dar
 import '../../features/posts/presentation/screens/create_posts_view.dart';
 import '../../features/profile/presentation/screens/profile_view.dart';
 import '../../features/quiz/presentation/screens/quiz_view.dart';
-
 import '../../features/auth/presentation/screens/auth_view.dart';
 import '../../features/auth/presentation/screens/forgot_password_view.dart';
 import '../../features/auth/presentation/screens/login_view.dart';
@@ -22,13 +25,10 @@ import '../../features/splash/presentation/screens/splash_view.dart';
 class Routes {
   static const String splashRoute = "/";
   static const String authRoute = "/authRoute";
-
   static const String loginRoute = "/login";
   static const String registerRoute = "/register";
   static const String homeRoute = "/homeRoute";
-
   static const String forgotPasswordRoute = "/forgotPassword";
-
   static const String mainPlanetsRoute = "/mainPlanets";
   static const String storeDetailsRoute = "/storeDetails";
   static const String qrDetails = "/qrDetails";
@@ -39,8 +39,7 @@ class Routes {
   static const String quizRoute = "/quizRoute";
   static const String blogRoute = "/blogRoute";
   static const String singleBlogRoute = "/singleBlog";
-    static const String notificationRoute = "/notification";
-
+  static const String notificationRoute = "/notification";
 }
 
 class RouteGenerator {
@@ -49,7 +48,12 @@ class RouteGenerator {
       case Routes.splashRoute:
         return MaterialPageRoute(builder: (_) => const SplashView());
       case Routes.authRoute:
-        return MaterialPageRoute(builder: (_) => const AuthView());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<AuthCubit>(),
+            child: const AuthView(),
+          ),
+        );
       case Routes.loginRoute:
         //initLoginModule();
         return MaterialPageRoute(builder: (_) => const LoginView());
@@ -62,7 +66,11 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
       case Routes.homeRoute:
         //  initHomeModule();
-        return MaterialPageRoute(builder: (_) => const HomeView());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                  create: (context) => getIt<PlantsCubit>(),
+                  child: const HomeView(),
+                ));
       case Routes.mainPlanetsRoute:
         //initLoginModule();
         return MaterialPageRoute(builder: (_) => const MainPlanetsView());
@@ -93,7 +101,7 @@ class RouteGenerator {
       case Routes.singleBlogRoute:
         // initStoreDetailsModule();
         return MaterialPageRoute(builder: (_) => const SingleBlogView());
-              case Routes.notificationRoute:
+      case Routes.notificationRoute:
         // initStoreDetailsModule();
         return MaterialPageRoute(builder: (_) => const NotifiticationView());
       default:
