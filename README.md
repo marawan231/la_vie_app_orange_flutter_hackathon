@@ -1,6 +1,22 @@
 # la_vie_app_orange_hackathone
 
-A new Flutter project.
+## Screenshots 
+![WhatsApp Image 2022-11-23 at 6 15 31 AM](https://user-images.githubusercontent.com/81522801/203468517-35b684c8-5418-4d44-9e63-1199908a03cb.jpeg)
+## OverView
+it an app for any one interested in plants where he can find a platfom to communicate and 
+search for plants and tools and advices
+
+## Features
+- auth using google and facebook
+- state managment with cubit 
+- qr scanner
+- responsive using screenutil 
+- dealing with api using retrofit
+- debendancy injection used get_it 
+- error handling 
+
+
+
 
 ## Getting Started
 
